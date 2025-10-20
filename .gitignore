@@ -1,0 +1,65 @@
+# -------- Global / OS --------
+.DS_Store
+Thumbs.db
+
+# -------- IDE --------
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# -------- Build / Gradle --------
+.gradle/
+**/build/
+**/out/
+# Wrapper logs
+gradle-app.setting
+.gradle-test-kit/
+
+# -------- Java/Kotlin --------
+hs_err_pid*
+replay_pid*
+*.log
+logs/
+tmp/
+**/.kotlinc/
+
+# -------- Spring Boot configs --------
+# keep the default application.yml but ignore local/secret profiles
+**/application-*.yml
+!backend/src/main/resources/application.yml
+**/application-*.properties
+!backend/src/main/resources/application.properties
+
+# -------- Node / Frontend --------
+**/node_modules/
+**/dist/
+**/.vite/
+**/.turbo/
+**/.eslintcache
+**/.stylelintcache
+**/.parcel-cache/
+**/.cache/
+
+# Env files
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.local
+**/.env.*.local
+
+# -------- Packages / Archives --------
+*.zip
+*.tar
+*.tar.gz
+
+# -------- Coverage / Reports --------
+**/coverage/
+**/reports/
+**/test-results/
+
+# -------- Misc --------
+*.swp
+*.swo
