@@ -1,12 +1,13 @@
 server:
-  port: 8080
+  port: 8082
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/room_reservation
-    username: room
-    password: roompw
+    url: jdbc:postgresql://localhost:5433/pay
+    username: pay
+    password: paypw
     driver-class-name: org.postgresql.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -14,13 +15,17 @@ spring:
       hibernate:
         format_sql: true
         jdbc.time_zone: UTC
+
   kafka:
-    bootstrap-servers: localhost:9094   # 호스트에서 실행할 때
+    bootstrap-servers: localhost:29092
     consumer:
-      group-id: room-reservation-consumer
-      auto-offset-reset: earliest
+      group-id: pay-service
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        isolation.level: read_committed
+      auto-offset-reset: earliest
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
@@ -30,10 +35,12 @@ spring:
 
 app:
   topics:
-    holdRequested: reservation.hold.requested
-    holdApproved:  reservation.hold.approved
-    holdDenied:    reservation.hold.denied
-    confirmed:     reservation.confirmed
-    cancelled:     reservation.cancelled
-  hold:
-    ttlMinutes: 10
+    paymentRequested:  payment.requested
+    paymentAuthorized: payment.authorized
+    paymentFailed:     payment.failed
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

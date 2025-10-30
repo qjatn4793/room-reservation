@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+spring:
+  main:
+    web-application-type: reactive
+  cloud:
+    gateway:
+      routes:
+        - id: room
+          uri: http://localhost:8081
+          predicates: [ Path=/api/rooms/** ]
+        - id: pay
+          uri: http://localhost:8082
+          predicates: [ Path=/api/pay/** ]
+      default-filters:
+        - RemoveRequestHeader=Cookie
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
