@@ -3,6 +3,9 @@ package com.rr.pay
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
-@SpringBootApplication(scanBasePackages = ["com.rr"])
+@SpringBootApplication
 class PayApplication
-fun main(args: Array<String>) = runApplication<PayApplication>(*args)
+
+fun main(args: Array<String>) {
+    runApplication<PayApplication>(*args)
+}
