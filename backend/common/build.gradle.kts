@@ -1,11 +1,12 @@
 plugins {
     `java-library`
-    id("io.spring.dependency-management")
+    kotlin("jvm") version "1.9.25"
 }
 
-dependencies {
-    // 공용 인터페이스/DTO 등 노출이 필요하면 api, 내부만 쓰면 implementation
-    api("org.slf4j:slf4j-api:2.0.16")
+java {
+    toolchain { languageVersion.set(JavaLanguageVersion.of(17)) }
+}
 
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.3")
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    kotlinOptions.jvmTarget = "17"
 }

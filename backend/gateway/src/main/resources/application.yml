@@ -2,21 +2,28 @@ server:
   port: 8080
 
 spring:
-  main:
-    web-application-type: reactive
+  application:
+    name: rr-gateway
   cloud:
     gateway:
+      default-filters:
+        - RemoveRequestHeader=Cookie
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
       routes:
         - id: room
           uri: http://localhost:8081
-          predicates: [ Path=/api/rooms/** ]
+          predicates:
+            - Path=/api/rooms/**
+          filters:
+            - StripPrefix=1
+            - AddRequestHeader=X-Through, gateway
         - id: pay
           uri: http://localhost:8082
-          predicates: [ Path=/api/pay/** ]
-      default-filters:
-        - RemoveRequestHeader=Cookie
+          predicates:
+            - Path=/api/pay/**
+          filters:
+            - StripPrefix=1
+            - AddRequestHeader=X-Through, gateway
+
 management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info
+  endpoints.web.exposure.include: health,info
