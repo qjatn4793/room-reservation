@@ -11,7 +11,7 @@ export default function App() {
     useEffect(() => {
         (async () => {
             try {
-                const res = await axios.get('/api/public/rooms', { validateStatus: () => true })
+                const res = await axios.get('/api/rooms/2', { validateStatus: () => true })
                 const ct = res.headers['content-type'] ?? ''
                 // 응답이 JSON 배열인지 점검
                 if (res.status >= 400) {
