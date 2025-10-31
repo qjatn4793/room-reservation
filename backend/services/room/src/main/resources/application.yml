@@ -1,5 +1,8 @@
 server:
   port: 8081
+  error:
+    include-message: always
+    include-binding-errors: always
 
 spring:
   application.name: room-service
@@ -32,3 +35,7 @@ app:
   topics:
     roomCreated: rr.room.created
     roomStatusUpdated: rr.room.status-updated
+
+logging:
+  level:
+    org.springframework: INFO
