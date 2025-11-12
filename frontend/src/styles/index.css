@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root {
+  height: 100%;
+}
+
+@layer components {
+  /* 단일 입력 컨트롤 높이/테두리 통일 */
+  .form-control {
+    @apply h-12 w-full border rounded-lg px-3;
+  }
+
+  /* prefix(예: 인원) 달린 그룹 인풋 */
+  .form-group {
+    @apply h-12 w-full flex items-center border rounded-lg;
+  }
+  .form-prefix {
+    @apply px-3 text-gray-500 whitespace-nowrap;
+  }
+  .form-input {
+    @apply flex-1 h-full px-3 outline-none border-0 focus:ring-0;
+  }
+
+  /* 버튼 공통 */
+  .btn-primary {
+    @apply h-12 px-4 rounded-lg bg-black text-white;
+  }
+}
