@@ -24,6 +24,13 @@ spring:
           filters:
             - StripPrefix=1
             - AddRequestHeader=X-Through, gateway
+        - id: booking
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/booking/**
+          filters:
+            - StripPrefix=1
+            - AddRequestHeader=X-Through, gateway
         - id: pay
           uri: http://localhost:8082
           predicates:
