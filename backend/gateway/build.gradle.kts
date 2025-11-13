@@ -6,9 +6,16 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":common"))
+
     implementation("org.springframework.cloud:spring-cloud-starter-gateway")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("com.fasterxml.jackson.core:jackson-databind")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
