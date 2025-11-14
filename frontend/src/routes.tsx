@@ -6,6 +6,7 @@ import StayDetail from './pages/StayDetail'
 import Booking from './pages/Booking'
 import PaymentResult from './pages/PaymentResult'
 import MyPage from './pages/MyPage'
+import Login from './pages/Login'
 
 export const router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
       { path: 'booking/:roomId', element: <Booking /> },
       { path: 'payment/result', element: <PaymentResult /> },
       { path: 'mypage', element: <MyPage /> },
+      { path: 'login', element: <Login /> },
     ]
   }
 ])

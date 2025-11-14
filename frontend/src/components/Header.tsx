@@ -8,6 +8,7 @@ export default function Header() {
         <nav className="flex gap-4">
           <Link to="/stays" className="hover:underline">숙소</Link>
           <Link to="/mypage" className="hover:underline">마이</Link>
+          <Link to="/login" className="hover:underline">로그인</Link>
         </nav>
       </div>
     </header>
