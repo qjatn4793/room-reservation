@@ -41,7 +41,7 @@ class RoomService(
         )
         return RoomResponse(
             id = saved.id,
-            stayId = stay.id,
+            stayId = stay.id!!,
             name = saved.name,
             maxPeople = saved.maxPeople,
             price = saved.price

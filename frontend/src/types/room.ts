@@ -1,5 +1,6 @@
 export type RoomSummary = {
-  id: string
+  id: number
+  stayId: number
   name: string
   location: string
   price: number

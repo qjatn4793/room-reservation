@@ -59,6 +59,7 @@ class RoomSearchRepository(
                 Projections.constructor(
                     RoomSummary::class.java,
                     room.id,           // Long
+                    stay.id,           // Long
                     displayName,       // String
                     stay.location,     // String
                     room.price,        // Long

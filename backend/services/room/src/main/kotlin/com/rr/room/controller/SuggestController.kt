@@ -31,7 +31,7 @@ class SuggestController(
                 Suggestion(
                     id = "loc-$idx",
                     name = loc,
-                    type = SuggestionType.region   // enum 에 맞춰서 사용
+                    type = SuggestionType.LOCATION   // enum 에 맞춰서 사용
                 )
             }
 
@@ -42,7 +42,7 @@ class SuggestController(
                 Suggestion(
                     id = "stay-${stay.id}",
                     name = stay.name,
-                    type = SuggestionType.landmark  // 혹은 stay 타입이 따로 있으면 그걸 사용
+                    type = SuggestionType.STAY   // enum 상수는 보통 대문자
                 )
             }
 
@@ -53,12 +53,23 @@ class SuggestController(
                 Suggestion(
                     id = "room-${room.id}",
                     name = room.name,
-                    type = SuggestionType.landmark  // 객실도 랜드마크처럼 보여줄지, 별도 타입 쓸지 선택
+                    type = SuggestionType.ROOM
                 )
             }
 
-        // 4) 합치고 상위 N개만
-        val items = (locationSuggestions + staySuggestions + roomSuggestions)
+        // 4) 랜드마크 이름 후보
+        val landMarkSuggestions = roomRepository
+            .findTop5ByNameContainingIgnoreCase(trimmed)
+            .map { landmark ->
+                Suggestion(
+                    id = "landmark-${landmark.id}",
+                    name = landmark.name,
+                    type = SuggestionType.LANDMARK
+                )
+            }
+
+        // 5) 합치고 상위 N개만
+        val items = (locationSuggestions + staySuggestions + roomSuggestions + landMarkSuggestions)
             .distinctBy { it.id }   // 중복 제거
             .take(10)
 

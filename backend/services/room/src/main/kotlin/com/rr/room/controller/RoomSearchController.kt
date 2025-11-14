@@ -1,9 +1,6 @@
 package com.rr.room.controller
 
 import com.rr.room.dto.RoomSummary
-import com.rr.room.dto.SuggestResponse
-import com.rr.room.dto.Suggestion
-import com.rr.room.dto.SuggestionType
 import com.rr.room.service.RoomSearchService
 import org.springframework.web.bind.annotation.*
 

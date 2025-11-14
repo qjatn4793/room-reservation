@@ -1,5 +1,6 @@
 package com.rr.room.domain
 
+import com.rr.room.domain.Stay
 import jakarta.persistence.*
 
 @Entity
