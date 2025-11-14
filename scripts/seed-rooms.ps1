@@ -3,8 +3,8 @@
 
 # ===== 설정 =====
 $BaseUrl = "http://localhost:8080"  # 게이트웨이
-$Stays   = 100000
-$Rooms   = 12000000
+$Stays   = 1000
+$Rooms   = 10000
 
 $ErrorActionPreference = "Stop"
 
