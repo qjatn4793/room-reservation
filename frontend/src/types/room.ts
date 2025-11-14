@@ -21,28 +21,3 @@ export type RoomDetail = RoomSummary & {
     price: number
   }>
 }
-
-export type BookingPayload = {
-  roomId: string
-  checkIn: string
-  checkOut: string
-  people: number
-  customer: {
-    name: string
-    phone: string
-    email?: string
-  }
-}
-
-export type BookingResult = {
-  bookingId: string
-  amount: number
-  currency: 'KRW'
-}
-
-export type PaymentResultData = {
-  bookingId: string
-  status: 'SUCCESS' | 'FAIL' | 'CANCEL'
-  approvedAt?: string
-  message?: string
-}

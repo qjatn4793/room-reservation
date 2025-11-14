@@ -1,10 +1,7 @@
 import { api } from './client'
 import {
   RoomSummary,
-  RoomDetail,
-  BookingPayload,
-  BookingResult,
-  PaymentResultData,
+  RoomDetail
 } from '@/types/room'
 
 /**
@@ -38,35 +35,5 @@ export async function searchRooms(params: {
  */
 export async function getRoomDetail(stayId: string) {
   const res = await api.get<RoomDetail>(`/api/rooms/${stayId}`)
-  return res.data
-}
-
-/**
- * 예약 생성
- * POST /api/rooms/booking -> room-service: /rooms/booking
- * (BookingPayload 안에 stayId, roomId, dates, people 등 들어있다고 가정)
- */
-export async function createBooking(payload: BookingPayload) {
-  const res = await api.post<BookingResult>('/api/rooms/booking', payload)
-  return res.data
-}
-
-/**
- * 결제 요청
- * POST /api/pay/{bookingId} -> pay-service: /pay/{bookingId}
- */
-export async function createPayment(bookingId: string) {
-  const res = await api.post<{ redirectUrl: string }>(`/api/pay/${bookingId}`)
-  return res.data
-}
-
-/**
- * 결제 결과 조회
- * GET /api/pay/result?pgToken=... -> pay-service: /pay/result
- */
-export async function fetchPaymentResult(pgToken: string) {
-  const res = await api.get<PaymentResultData>('/api/pay/result', {
-    params: { pgToken },
-  })
   return res.data
 }

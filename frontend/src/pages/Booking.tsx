@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import { createBooking, createPayment } from '@/api/rooms'
+import { createBooking, createPayment } from '@/api/pays'
 
 export default function Booking() {
   const { roomId } = useParams()
@@ -13,14 +13,15 @@ export default function Booking() {
     if (!roomId) return
     const booking = await createBooking({
       roomId,
+      userId: "test", // TODO :::: userId 나중에 로그인된 유저 ID 로 변경필요
       checkIn: new Date().toISOString().slice(0,10),
       checkOut: new Date(Date.now() + 86400000).toISOString().slice(0,10),
       people: 2,
       customer: { name, phone }
     })
-    const { redirectUrl } = await createPayment(booking.bookingId)
+    const { redirectUrl } = await createPayment(booking.reservationId)
     // In real production you'd redirect to PG; for now, we emulate redirect result
-    window.location.href = redirectUrl || '/payment/result?status=SUCCESS&bookingId=' + booking.bookingId
+    window.location.href = redirectUrl || '/payment/result?status=SUCCESS&bookingId=' + booking.reservationId
   }
 
   return (
