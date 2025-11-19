@@ -7,6 +7,7 @@ import Booking from './pages/Booking'
 import PaymentResult from './pages/PaymentResult'
 import MyPage from './pages/MyPage'
 import Login from './pages/Login'
+import PaymentWaitPage from './pages/PaymentWaitPage'
 
 export const router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
       { path: 'stays/:stayId', element: <StayDetail /> },
       { path: 'booking/:roomId', element: <Booking /> },
       { path: 'payment/result', element: <PaymentResult /> },
+      { path: 'payment/wait', element: <PaymentWaitPage /> },
       { path: 'mypage', element: <MyPage /> },
       { path: 'login', element: <Login /> },
     ]

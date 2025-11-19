@@ -39,13 +39,19 @@ spring:
 
 app:
   topics:
-    # booking 에서 사용할 토픽 (BookingProducer @Value("\${app.topics.bookingRequested}"))
-    bookingRequested: rr.booking.requested
-
-    # 결제 단계 쪽에서 사용할 토픽들(나중에 payment 이벤트 쓸 때)
+    bookingRequested: booking.requested      # BookingProducer 가 쓰는 토픽
+    holdApproved:    booking.hold-approved   # HoldConsumers 가 듣는 토픽
+    holdDenied:      booking.hold-denied
     paymentRequested:  payment.requested
     paymentAuthorized: payment.authorized
     paymentFailed:     payment.failed
+
+  kafka:
+    groups:
+      pay-hold: rr-pay-hold
+      pay-payment: rr-pay-payment
+  payment:
+    return-url-base: "http://localhost:5173/payment/result"
 
 management:
   endpoints:
@@ -55,5 +61,7 @@ management:
 
 logging:
   level:
-    org.hibernate.SQL: DEBUG
-    org.hibernate.orm.jdbc.bind: TRACE
+    com.rr.pay: DEBUG
+    com.rr.room: DEBUG
+    # Kafka 쪽
+    org.springframework.kafka: INFO

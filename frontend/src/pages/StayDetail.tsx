@@ -64,7 +64,18 @@ export default function StayDetail() {
                   </div>
                   <button
                     className="mt-2 px-3 py-2 rounded-lg bg-black text-white"
-                    onClick={() => navigate(`/booking/${room.roomId}`)}
+                    onClick={() =>
+                      navigate(`/booking/${room.roomId}`, {
+                        state: {
+                          room: {
+                            roomId: room.roomId,
+                            name: room.name,
+                            price: room.price,
+                            maxPeople: room.maxPeople,
+                          },
+                        },
+                      })
+                    }
                   >
                     예약하기
                   </button>

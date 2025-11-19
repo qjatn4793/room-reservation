@@ -1,6 +1,7 @@
 package com.rr.pay.service
 
 import com.rr.pay.domain.Reservation
+import com.rr.pay.domain.ReservationStatus
 import com.rr.pay.dto.BookingRequest
 import com.rr.pay.dto.BookingResponse
 import com.rr.pay.messaging.BookingProducer
@@ -17,24 +18,22 @@ class BookingService(
 
     @Transactional
     fun create(request: BookingRequest): BookingResponse {
-        val checkIn  = LocalDate.parse(request.checkIn)
-        val checkOut = LocalDate.parse(request.checkOut)
 
-        require(checkOut.isAfter(checkIn)) {
-            "checkOut must be after checkIn"
-        }
+        val checkIn = LocalDate.parse(request.checkIn)
+        val checkOut = LocalDate.parse(request.checkOut)
 
         val reservation = Reservation(
             roomId = request.roomId,
             userId = request.userId,
             checkIn = checkIn,
             checkOut = checkOut,
-            amount = request.amount
+            amount = request.amount,
+            status = ReservationStatus.HOLD   // 재고 홀드 대기
         )
 
         val saved = reservationRepository.save(reservation)
 
-        // 여기서 Kafka 이벤트 발행
+        // 재고 체크/홀드를 room-service에게 위임
         bookingProducer.publishBookingRequested(saved)
 
         return BookingResponse(

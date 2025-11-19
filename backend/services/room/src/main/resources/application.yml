@@ -36,6 +36,18 @@ app:
     roomCreated: rr.room.created
     roomStatusUpdated: rr.room.status-updated
 
+    bookingRequested: booking.requested
+    holdApproved: booking.hold-approved
+    holdDenied: booking.hold-denied
+
+    paymentRequested: payment.requested
+    paymentAuthorized: payment.authorized
+    paymentFailed: payment.failed
+
+  kafka:
+    groups:
+      room-booking: rr-room-booking
+
 logging:
   level:
     org.springframework: INFO
