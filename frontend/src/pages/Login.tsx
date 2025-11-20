@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Lock, Mail, Eye, EyeOff } from 'lucide-react';
+import { login } from '@/api/login'
+import { useAuth } from '@/hooks/useAuth';
 
 interface FormErrors {
   email?: string;
@@ -12,6 +14,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
+  const { loginSuccess } = useAuth();
 
   const validateForm = () => {
     const newErrors: FormErrors = {};
@@ -37,7 +40,13 @@ export default function LoginPage() {
     
     if (validateForm()) {
       // 로그인 처리 로직
-      alert(`로그인 시도\n이메일: ${email}\n자동 로그인: ${rememberMe ? '예' : '아니오'}`);
+      try {
+        login({ email, password });
+        loginSuccess();
+        alert('로그인 성공!');
+      } catch (err: any) {
+        alert(err.response?.data?.message || '로그인 실패');
+      }
     }
   };
 

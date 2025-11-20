@@ -38,6 +38,13 @@ spring:
           filters:
             - StripPrefix=1
             - AddRequestHeader=X-Through, gateway
+        - id: user
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - StripPrefix=1
+            - AddRequestHeader=X-Through, gateway
 
 management:
   endpoints.web.exposure.include: health,info
