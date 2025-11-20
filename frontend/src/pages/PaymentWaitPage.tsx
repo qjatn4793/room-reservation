@@ -25,7 +25,7 @@ export default function PaymentWaitPage() {
         // 1) 결제 시작 (HOLD → HOLD_PENDING + 이벤트 발행)
         await startPayment(reservationId)
 
-        // 2) 결제 결과 대기 (최대 10초, WebFlux waitPaymentResult)
+        // 2) 결제 결과 대기 (최대 30초, MVC waitPaymentResult)
         const result: PaymentResultData = await waitPaymentResult(reservationId)
 
         if (cancelled) return
@@ -70,7 +70,7 @@ export default function PaymentWaitPage() {
       <p className="text-sm text-gray-500">
         결제 결과를 확인하고 있어요.
         <br />
-        최대 10초 정도 걸릴 수 있습니다.
+        최대 30초 정도 걸릴 수 있습니다.
       </p>
 
       {loading && (

@@ -13,12 +13,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.server.ResponseStatusException
-import reactor.core.publisher.Flux
-import reactor.core.publisher.Mono
-import reactor.core.scheduler.Schedulers
-import java.time.Duration
 import java.util.UUID
-import java.util.concurrent.TimeoutException
 
 @Service
 class PaymentService (
@@ -216,46 +211,50 @@ class PaymentService (
     fun waitPaymentResult(
         reservationId: UUID,
         timeoutSeconds: Long = 10
-    ): Mono<PaymentResultResponse> {
+    ): PaymentResultResponse {
 
-        val timeout = Duration.ofSeconds(timeoutSeconds)
-        val interval = Duration.ofMillis(300)   // 0.3초마다 한번씩 조회
+        val intervalMillis = 300L
+        val timeoutMillis = timeoutSeconds * 1000
+        val deadline = System.currentTimeMillis() + timeoutMillis
 
-        return Flux.interval(interval)
-            .flatMap {
-                Mono.fromCallable {
-                    reservationRepository.findById(reservationId)
-                        .orElseThrow {
-                            ResponseStatusException(
-                                HttpStatus.NOT_FOUND,
-                                "Reservation $reservationId not found"
-                            )
-                        }
+        var lastReservation = reservationRepository.findById(reservationId)
+            .orElseThrow {
+                ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Reservation $reservationId not found"
+                )
+            }
+
+        // timeout 전까지 계속 폴링
+        while (System.currentTimeMillis() < deadline) {
+
+            if (lastReservation.status != ReservationStatus.HOLD_PENDING) {
+                // 결제 결과가 확정됨
+                return toResultResponse(lastReservation, timedOut = false)
+            }
+
+            try {
+                Thread.sleep(intervalMillis)
+            } catch (e: InterruptedException) {
+                Thread.currentThread().interrupt()
+                throw ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Thread interrupted while waiting payment result",
+                    e
+                )
+            }
+
+            lastReservation = reservationRepository.findById(reservationId)
+                .orElseThrow {
+                    ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Reservation $reservationId not found while waiting"
+                    )
                 }
-                    .subscribeOn(Schedulers.boundedElastic())
-            }
-            .filter { reservation ->
-                // 더 이상 "결제 중"이 아닐 때 (즉, 결과가 난 상태)
-                reservation.status != ReservationStatus.HOLD_PENDING
-            }
-            .next() // 첫 번째로 조건을 만족하는 값 1개만 가져옴
-            .map { reservation ->
-                toResultResponse(reservation, timedOut = false)
-            }
-            .timeout(timeout)
-            .onErrorResume(TimeoutException::class.java) {
-                // 10초 안에 상태가 안 바뀌면 타임아웃 응답
-                Mono.fromCallable {
-                    val reservation = reservationRepository.findById(reservationId)
-                        .orElseThrow {
-                            ResponseStatusException(
-                                HttpStatus.NOT_FOUND,
-                                "Reservation $reservationId not found on timeout"
-                            )
-                        }
-                    toResultResponse(reservation, timedOut = true)
-                }.subscribeOn(Schedulers.boundedElastic())
-            }
+        }
+
+        // 여기까지 오면 timeout
+        return toResultResponse(lastReservation, timedOut = true)
     }
 
     private fun toResultResponse(

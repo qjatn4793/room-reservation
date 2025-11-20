@@ -20,9 +20,5 @@ dependencies {
 
     runtimeOnly("org.postgresql:postgresql")
 
-    // WebFlux + Reactor
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
-    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
-
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

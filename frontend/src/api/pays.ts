@@ -61,7 +61,7 @@ export async function fetchPaymentResult(params: {
  * 결제 결과 대기 조회 (폴링)
  * GET /api/pay/wait-result/{reservationId}?timeoutSeconds=...
  */
-export async function waitPaymentResult(reservationId: string, timeoutSeconds = 10) {
+export async function waitPaymentResult(reservationId: string, timeoutSeconds = 30) {
   const res = await api.get<PaymentResultData>(`/api/pay/wait-result/${reservationId}`, {
     params: { timeoutSeconds },
   });
