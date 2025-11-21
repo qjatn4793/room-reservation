@@ -7,7 +7,7 @@ spring:
   cloud:
     gateway:
       default-filters:
-        - RemoveRequestHeader=Cookie
+        # - RemoveRequestHeader=Cookie
         - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
       routes:
         - id: room
