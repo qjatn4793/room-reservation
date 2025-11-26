@@ -8,5 +8,5 @@ data class RoomSummary(
     val price: Long,
     val rating: Double,
     val reviewCount: Int,
-    val thumbnailUrl: String
+    val thumbnailUrl: String?
 )

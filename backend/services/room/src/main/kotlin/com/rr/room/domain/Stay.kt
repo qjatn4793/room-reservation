@@ -7,46 +7,46 @@ import jakarta.persistence.*
 open class Stay(
 
     @Column(nullable = false)
-    var name: String,
+    open var name: String,
 
     @Column(nullable = false)
-    var location: String,
+    open var location: String,
 
     // 평점: 처음엔 0.0 으로 시작
     @Column(nullable = false)
-    var rating: Double = 0.0,
+    open var rating: Double = 0.0,
 
     // 리뷰 수: 처음엔 0으로 시작
     @Column(nullable = false)
-    var reviewCount: Int = 0,
+    open var reviewCount: Int = 0,
 
     // 상세 설명: 선택값
     @Column(columnDefinition = "TEXT")
-    var description: String? = null,
+    open var description: String? = null,
 
     @Column(name = "thumbnail_url", length = 1000)
-    var thumbnailUrl: String? = null,
+    open var thumbnailUrl: String? = null,
 
     // 편의시설: 나중에 필요하면 채우기
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(
         name = "stay_amenities",
         joinColumns = [JoinColumn(name = "stay_id")]
     )
     @Column(name = "amenity")
-    var amenities: MutableList<String> = mutableListOf(),
+    open var amenities: MutableList<String> = mutableListOf(),
 
     // 이미지 URL 리스트
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(
         name = "stay_images",
         joinColumns = [JoinColumn(name = "stay_id")]
     )
     @Column(name = "image_url")
-    var images: MutableList<String> = mutableListOf()
+    open var images: MutableList<String> = mutableListOf()
 ) {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null
+    open var id: Long? = null
 }
